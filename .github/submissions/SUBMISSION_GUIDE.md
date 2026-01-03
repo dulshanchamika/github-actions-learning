@@ -83,17 +83,29 @@ git push origin submission/beginner-badge-yourname
 2. Click "Pull requests" → "New pull request"
 3. Select "compare across forks"
 4. Choose your fork and branch
-5. Add a title: "🎖️ [BEGINNER] Badge Submission - Your Name"
-6. Copy the template and fill it in
+5. Add a title with the badge emoji: **"🎖️ [BEGINNER] Badge Submission - Your Name"**
+   - Make sure to include `🎖️` emoji
+   - Include the level: `[BEGINNER]`, `[INTERMEDIATE]`, or `[ADVANCED]`
+6. Select the **Badge Submission** template (if available)
+7. Fill in all sections with your evidence
 
-### Step 7: Add Labels & Assign
-On your Pull Request:
-- **Add Labels:**
-  - `submission`
-  - `beginner` (or `intermediate` / `advanced`)
-  - `pending-review`
+### Step 7: Automatic Assignment & Labels ⚡
+**Don't worry - this happens automatically!**
 
-- **Assign to:** `@nisalgunawardhana`
+When you create your PR with:
+- ✅ The 🎖️ emoji in the title
+- ✅ The level specified: BEGINNER/INTERMEDIATE/ADVANCED
+
+Our automation workflow will automatically:
+- 🤖 **Assign** the PR to `@nisalgunawardhana` for review
+- 🤖 **Add labels:**
+  - `submission` - Marks it as a submission
+  - `pending-review` - Shows it's waiting for review
+  - `beginner` / `intermediate` / `advanced` - Your badge level
+- 🤖 **Post a welcome comment** thanking you for your submission
+- 🤖 **Set status** as Pending Review
+
+**No manual work needed from you!** Just create the PR with the correct format.
 
 ### Step 8: Wait for Review
 Your submission will be reviewed within 2-5 days. The reviewer will:
@@ -170,7 +182,55 @@ Once approved:
 
 ---
 
-## 📞 Need Help?
+## 🤖 Automated Features
+
+Our submission process is powered by GitHub Actions automation! Here's what happens automatically:
+
+### PR Auto-Assignment & Labeling
+When you create a PR with:
+- 🎖️ emoji in the title
+- Badge level: BEGINNER/INTERMEDIATE/ADVANCED
+
+**Automatic Actions:**
+1. ✅ **Assigned to @nisalgunawardhana** - The reviewer receives your submission
+2. ✅ **Labels Added Automatically:**
+   - `submission` - Identifies as a badge submission
+   - `pending-review` - Shows review status
+   - `beginner`/`intermediate`/`advanced` - Your badge level
+3. ✅ **Welcome Comment Posted** - We thank you for your submission
+4. ✅ **Review Initiated** - Reviewer notified immediately
+
+### Issue Auto-Assignment & Labeling
+When you create a badge submission issue:
+- ✅ **Assigned to @nisalgunawardhana**
+- ✅ **Labels Added:** `submission`, `pending-review`, `[level]`
+- ✅ **Welcome Comment Posted**
+- ✅ **Tracking Issue Created**
+
+### Correct PR Title Format
+
+**✅ CORRECT:**
+- `🎖️ [BEGINNER] Badge Submission - John Doe`
+- `🎖️ [INTERMEDIATE] Badge Submission - Jane Smith`
+- `🎖️ [ADVANCED] Badge Submission - Alex Johnson`
+
+**❌ INCORRECT:**
+- `Badge Submission` (missing emoji and level)
+- `Beginner Badge` (missing emoji)
+- `PR for Badge` (missing structure)
+
+### What Gets Created Automatically
+
+When your PR is opened:
+
+| Item | Auto-Assigned | Auto-Labeled | Auto-Commented |
+|------|---|---|---|
+| **Reviewers** | ✅ @nisalgunawardhana | N/A | ✅ Welcome message |
+| **Labels** | N/A | ✅ submission, pending-review, [level] | N/A |
+| **Assignees** | ✅ @nisalgunawardhana | N/A | N/A |
+| **Comments** | N/A | N/A | ✅ Confirmation |
+
+---
 
 1. **Check Documentation:** [README.md](../../README.md) & [TASKS.md](../../TASKS.md)
 2. **Read Learning Docs:** [docs/](../../docs/)

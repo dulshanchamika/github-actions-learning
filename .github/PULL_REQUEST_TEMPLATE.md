@@ -48,6 +48,11 @@ Add any other context about the pull request here (learning outcome, related lin
 
 ---
 
+<!-- 
+🎖️ BADGE SUBMISSION? 
+If this is a badge submission, please use the badge submission template instead!
+Learn more: https://github.com/nisalgunawardhana/github-actions-learning/blob/main/.github/submissions/SUBMISSION_GUIDE.md
+-->
 **Thank you for contributing! 🙌**
 
 Please ensure your PR follows our contribution guidelines and includes appropriate documentation.

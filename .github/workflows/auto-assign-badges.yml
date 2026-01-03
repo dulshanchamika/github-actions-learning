@@ -1,0 +1,132 @@
+name: Auto-assign Badge Submissions
+
+on:
+  pull_request:
+    types: [opened]
+  issues:
+    types: [opened]
+
+jobs:
+  auto-assign-and-label:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      issues: write
+
+    steps:
+      - name: Check if submission PR
+        id: check-submission
+        run: |
+          if [[ "${{ github.event.pull_request.title }}" == *"🎖️"* ]] || [[ "${{ github.event.pull_request.title }}" == *"Badge"* ]] || [[ "${{ github.event.pull_request.title }}" == *"submission"* ]]; then
+            echo "is_submission=true" >> $GITHUB_OUTPUT
+          fi
+          if [[ "${{ github.event.issue.title }}" == *"🎖️"* ]] || [[ "${{ github.event.issue.title }}" == *"Badge"* ]] || [[ "${{ github.event.issue.title }}" == *"submission"* ]]; then
+            echo "is_submission_issue=true" >> $GITHUB_OUTPUT
+          fi
+
+      # Auto-assign PR to reviewer
+      - name: Assign PR to reviewer
+        if: github.event.pull_request && steps.check-submission.outputs.is_submission == 'true'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            github.rest.pulls.createReviewRequest({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number,
+              reviewers: ['nisalgunawardhana']
+            });
+
+      # Auto-assign Issue to reviewer
+      - name: Assign issue to reviewer
+        if: github.event.issue && steps.check-submission.outputs.is_submission_issue == 'true'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            github.rest.issues.addAssignees({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              assignees: ['nisalgunawardhana']
+            });
+
+      # Extract badge level from title
+      - name: Determine badge level
+        id: badge-level
+        run: |
+          title="${{ github.event.pull_request.title }}${{ github.event.issue.title }}"
+          if [[ "$title" == *"BEGINNER"* ]] || [[ "$title" == *"Beginner"* ]]; then
+            echo "level=beginner" >> $GITHUB_OUTPUT
+          elif [[ "$title" == *"INTERMEDIATE"* ]] || [[ "$title" == *"Intermediate"* ]]; then
+            echo "level=intermediate" >> $GITHUB_OUTPUT
+          elif [[ "$title" == *"ADVANCED"* ]] || [[ "$title" == *"Advanced"* ]]; then
+            echo "level=advanced" >> $GITHUB_OUTPUT
+          fi
+
+      # Add labels to PR
+      - name: Add labels to PR
+        if: github.event.pull_request && steps.check-submission.outputs.is_submission == 'true'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const labels = ['submission', 'pending-review'];
+            const level = '${{ steps.badge-level.outputs.level }}';
+            if (level) {
+              labels.push(level);
+            }
+            github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              labels: labels
+            });
+
+      # Add labels to Issue
+      - name: Add labels to issue
+        if: github.event.issue && steps.check-submission.outputs.is_submission_issue == 'true'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const labels = ['submission', 'pending-review'];
+            const level = '${{ steps.badge-level.outputs.level }}';
+            if (level) {
+              labels.push(level);
+            }
+            github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              labels: labels
+            });
+
+      # Post welcome comment on PR
+      - name: Welcome comment on PR
+        if: github.event.pull_request && steps.check-submission.outputs.is_submission == 'true'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: `🎖️ **Badge Submission Received!**\n\nThank you for your submission! Your work is being reviewed.\n\n**Status:** Pending Review ⏳\n**Assigned to:** @nisalgunawardhana\n**Expected Review Time:** 2-5 days\n\n📝 **Tips for Reviewers:**\n- All evidence is attached\n- Workflow files are present\n- Understanding is demonstrated\n- All tasks are completed\n\nWe'll provide feedback soon! Good luck! 🚀`
+            });
+
+      # Post welcome comment on Issue
+      - name: Welcome comment on issue
+        if: github.event.issue && steps.check-submission.outputs.is_submission_issue == 'true'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: `🎖️ **Badge Submission Tracking Issue Created!**\n\nYour badge submission is being tracked.\n\n**Status:** Pending Review ⏳\n**Assigned to:** @nisalgunawardhana\n**Expected Review Time:** 2-5 days\n\n✅ **Next Steps:**\n1. Ensure your PR is linked above\n2. Verify all evidence is in the PR\n3. Wait for review and feedback\n\nWe'll notify you as soon as the review is complete! 🚀`
+            });
