@@ -15,5 +15,5 @@ jobs:
         run: echo "This step runs on all branches"
 
       - name: Deploy (main only)
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'main'
         run: echo "🚀 Deploying to production..."
