@@ -2,7 +2,7 @@ name: Hello World Workflow
 
 on:
   push:
-    branches: [develop] #removed for simplicity
+    branches: [main] #removed for simplicity
   workflow_dispatch:
 
 jobs:
