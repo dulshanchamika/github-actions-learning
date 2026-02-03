@@ -55,6 +55,17 @@ jobs:
       - name: Run tests
         working-directory: ./sample-app
         run: npm test
+
+      - name: Create artifact
+        if: matrix.node-version == '18.x'
+        run: echo "Build output" > output.txt
+
+      - name: Upload artifact
+        if: matrix.node-version == '18.x'
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-output
+          path: output.txt
       
       - name: Upload coverage reports
         if: matrix.node-version == '18.x'
