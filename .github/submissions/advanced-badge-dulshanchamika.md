@@ -45,6 +45,9 @@
 ### Task 9: Conditional Execution
 ![Task 9 - Conditional Execution](screenshots/task9-1.png)(screenshots/task9-2.png)(screenshots/task9-3.png)(screenshots/task9-4.png)
 
+### Task 10: Create a PR and Use Issue Templates
+![Task 10 - PR and Issue Template](screenshots/task10.png)
+
 ## Notes
 I had issues with some depricated versions and errors with package-lock.json.
 
