@@ -10,7 +10,7 @@ This is a simple Express.js application for learning GitHub Actions.
 npm install
 ```
 
-### Development
+### Development.
 
 ```bash
 npm run dev
